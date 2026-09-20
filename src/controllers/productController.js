@@ -62,7 +62,7 @@ export const markPaymentPaid = async (req, res) => {
       return failure(res, "Payment not found", 404);
     }
     if (payment.status === "PAID") {
-  throw new AppError({
+  throw new appError({
     status: 409,
     code: ERROR_CODES.PAYMENT_ALREADY_MARKED,
     message: "Payment already marked as PAID"

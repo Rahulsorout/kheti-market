@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { AppError } from "../utils/AppError.js";
+import { AppError } from "../utils/appError.js";
 import { ERROR_CODES } from "../utils/errorCodes.js";
 
 export const validateObjectId = (paramName = "id") => {
