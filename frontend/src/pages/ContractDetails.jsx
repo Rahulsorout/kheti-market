@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
-
+import { API_URL } from "../config/api";
 import {
   createPayment,
   getPaymentByOrder,
@@ -59,7 +59,7 @@ export default function ContractDetails() {
       setError("");
 
       const response = await axios.get(
-        `http://localhost:5000/api/v1/contracts/${contractId}`,
+        `{API_URL}/api/v1/contracts/${contractId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -110,7 +110,7 @@ export default function ContractDetails() {
       setUpdating(true);
 
       const response = await axios.patch(
-        `http://localhost:5000/api/v1/contracts/${contractId}/status`,
+        `{API_URL}/api/v1/contracts/${contractId}/status`,
         {
           status: newStatus
         },

@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 import { getMessages, sendMessage } from "../services/chatService";
 import { useAuth } from "../context/AuthContext";
 
-const SOCKET_URL = "http://localhost:5000";
+import { SOCKET_URL } from "../config/api";
 
 /*
  * Get MongoDB user ID regardless of how

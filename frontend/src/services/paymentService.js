@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const API =
-  "http://localhost:5000/api/v1/payments";
+import { API_URL } from "../config/api";
+
+const API = `${API_URL}/payments`;
 
 export const createPayment = (data, token) =>
   axios.post(API, data, {

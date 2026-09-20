@@ -10,7 +10,7 @@ import {
   rejectBid,
 } from "../services/bidService";
 
-const SOCKET_URL = "http://localhost:5000";
+import { SOCKET_URL } from "../config/api";
 
 export default function FarmerBids() {
   const { listingId } = useParams();

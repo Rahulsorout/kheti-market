@@ -7,6 +7,7 @@ import { createOrder } from "../services/orderService";
 import { useAuth } from "../context/AuthContext";
 import { getFarmerReviews } from "../services/reviewService";
 import { createBid } from "../services/bidService";
+import { SOCKET_URL } from "../config/api";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -78,7 +79,7 @@ function ProductDetails() {
       return;
     }
 
-    const socket = io("http://localhost:5000");
+    const socket = io(SOCKET_URL);
 
     socket.on("connect", () => {
       console.log(

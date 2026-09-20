@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 
-const API_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
+import { API_URL } from "../../config/api";
 
 export default function AdminUsers() {
   const navigate = useNavigate();

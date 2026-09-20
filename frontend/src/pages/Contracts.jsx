@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import { io } from "socket.io-client";
 
-const SOCKET_URL = "http://localhost:5000";
+import { API_URL, SOCKET_URL } from "../config/api";
 
 export default function Contracts() {
   const { token, user } = useAuth();
@@ -24,7 +24,7 @@ export default function Contracts() {
       setError("");
 
       const response = await axios.get(
-        "http://localhost:5000/api/v1/contracts",
+        "{API_URL}/api/v1/contracts",
         {
           headers: {
             Authorization: `Bearer ${token}`,

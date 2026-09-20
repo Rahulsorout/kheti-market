@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 import { useAuth } from "../../context/AuthContext";
 import { getBuyerOrders } from "../../services/orderService";
 
-const SOCKET_URL = "http://localhost:5000";
+import { SOCKET_URL } from "../../config/api";
 
 export default function BuyerOrders() {
   const { token, user } = useAuth();

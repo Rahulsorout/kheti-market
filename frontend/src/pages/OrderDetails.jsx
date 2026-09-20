@@ -25,7 +25,7 @@ import {
   getOrderReview
 } from "../services/reviewService";
 
-const SOCKET_URL = "http://localhost:5000";
+import { SOCKET_URL } from "../config/api";
 
 function OrderDetails() {
   const { id } = useParams();

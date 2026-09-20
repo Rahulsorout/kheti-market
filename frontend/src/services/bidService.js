@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API = "http://localhost:5000/api/v1";
+import { API_URL } from "../config/api";
+
+const API = API_URL;
 
 const authConfig = (token) => ({
   headers: {

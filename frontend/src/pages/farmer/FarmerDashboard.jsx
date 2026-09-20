@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { API_URL } from "../../config/api";
 
 export default function FarmerDashboard() {
   const { user, token, logout } = useAuth();
@@ -23,7 +24,7 @@ export default function FarmerDashboard() {
         setError("");
 
         const response = await axios.get(
-          "http://localhost:5000/api/v1/orders/dashboard/farmer",
+          "{API_URL}/api/v1/orders/dashboard/farmer",
           {
             headers: {
               Authorization: `Bearer ${token}`,
