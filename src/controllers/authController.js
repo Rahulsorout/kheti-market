@@ -3,73 +3,38 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { success, failure } from "../utils/response.js";
 
-// =====================================================
-// GENERATE JWT
-// =====================================================
-
-const generateToken = (id) => {
-  return jwt.sign(
-    { id },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: "7d",
-    }
-  );
-};
-
-
-// =====================================================
-// REGISTER
-// POST /api/v1/auth/register
-// =====================================================
+const generateToken = (id) =>
+  jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "7d",
+  });
 
 export const register = async (req, res) => {
   try {
-    const {
-      role,
-      name,
-      email,
-      password,
-      location,
-    } = req.body;
-
-    // -------------------------------------------------
-    // Basic validation
-    // -------------------------------------------------
+    const { role, name, email, password, location } = req.body;
 
     if (!role || !name || !email || !password) {
       return failure(
         res,
-        "Missing required fields",
+        {
+          code: "MISSING_FIELDS",
+          message: "Missing required fields",
+        },
         400
       );
     }
-
-    // -------------------------------------------------
-    // Validate role
-    // IMPORTANT:
-    // Do not allow public registration as ADMIN.
-    // -------------------------------------------------
 
     if (!["FARMER", "BUYER"].includes(role)) {
       return failure(
         res,
-        "Invalid registration role",
+        {
+          code: "INVALID_ROLE",
+          message: "Invalid registration role",
+        },
         400
       );
     }
 
-    // -------------------------------------------------
-    // Normalize email
-    // -------------------------------------------------
-
-    const normalizedEmail = email
-      .trim()
-      .toLowerCase();
-
-    // -------------------------------------------------
-    // Check existing user
-    // -------------------------------------------------
+    const normalizedEmail = email.trim().toLowerCase();
 
     const existingUser = await User.findOne({
       email: normalizedEmail,
@@ -78,54 +43,35 @@ export const register = async (req, res) => {
     if (existingUser) {
       return failure(
         res,
-        "Email already exists",
+        {
+          code: "EMAIL_EXISTS",
+          message: "Email already exists",
+        },
         409
       );
     }
 
-    // -------------------------------------------------
-    // Hash password
-    // -------------------------------------------------
-
-    const hashedPassword = await bcrypt.hash(
-      password,
-      10
-    );
-
-    // -------------------------------------------------
-    // Create user
-    // -------------------------------------------------
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
       role,
       name: name.trim(),
       email: normalizedEmail,
       passwordHash: hashedPassword,
-
       profile: {
         location: location?.trim() || undefined,
       },
-
       isActive: true,
       isVerified: false,
       isBlocked: false,
     });
 
-    // -------------------------------------------------
-    // Generate JWT
-    // -------------------------------------------------
-
     const token = generateToken(user._id);
-
-    // -------------------------------------------------
-    // Response
-    // -------------------------------------------------
 
     return success(
       res,
       {
         token,
-
         user: {
           id: user._id,
           role: user.role,
@@ -135,57 +81,39 @@ export const register = async (req, res) => {
       },
       201
     );
-
   } catch (err) {
-    console.error(
-      "Registration error:",
-      err
-    );
+    console.error("REGISTER ERROR:", err);
 
     return failure(
       res,
-      "Invalid input",
-      400
+      {
+        code: "REGISTER_FAILED",
+        message: "Registration failed",
+        details: process.env.NODE_ENV === "production"
+          ? null
+          : err.message,
+      },
+      500
     );
   }
 };
 
-
-// =====================================================
-// LOGIN
-// POST /api/v1/auth/login
-// =====================================================
-
 export const login = async (req, res) => {
   try {
-    const {
-      email,
-      password,
-    } = req.body;
-
-    // -------------------------------------------------
-    // Basic validation
-    // -------------------------------------------------
+    const { email, password } = req.body;
 
     if (!email || !password) {
       return failure(
         res,
-        "Email and password required",
+        {
+          code: "MISSING_CREDENTIALS",
+          message: "Email and password required",
+        },
         400
       );
     }
 
-    // -------------------------------------------------
-    // Normalize email
-    // -------------------------------------------------
-
-    const normalizedEmail = email
-      .trim()
-      .toLowerCase();
-
-    // -------------------------------------------------
-    // Find user
-    // -------------------------------------------------
+    const normalizedEmail = email.trim().toLowerCase();
 
     const user = await User.findOne({
       email: normalizedEmail,
@@ -194,19 +122,21 @@ export const login = async (req, res) => {
     if (!user) {
       return failure(
         res,
-        "Invalid credentials",
+        {
+          code: "INVALID_CREDENTIALS",
+          message: "Invalid credentials",
+        },
         401
       );
     }
 
-    // -------------------------------------------------
-    // Check account status
-    // -------------------------------------------------
-
     if (user.isBlocked) {
       return failure(
         res,
-        "Your account has been blocked by an administrator",
+        {
+          code: "USER_BLOCKED",
+          message: "Your account has been blocked by an administrator",
+        },
         403
       );
     }
@@ -214,14 +144,13 @@ export const login = async (req, res) => {
     if (!user.isActive) {
       return failure(
         res,
-        "Your account has been deactivated",
+        {
+          code: "USER_INACTIVE",
+          message: "Your account has been deactivated",
+        },
         403
       );
     }
-
-    // -------------------------------------------------
-    // Compare password
-    // -------------------------------------------------
 
     const isMatch = await bcrypt.compare(
       password,
@@ -231,48 +160,38 @@ export const login = async (req, res) => {
     if (!isMatch) {
       return failure(
         res,
-        "Invalid credentials",
+        {
+          code: "INVALID_CREDENTIALS",
+          message: "Invalid credentials",
+        },
         401
       );
     }
 
-    // -------------------------------------------------
-    // Generate JWT
-    // -------------------------------------------------
-
     const token = generateToken(user._id);
 
-    // -------------------------------------------------
-    // Response
-    // IMPORTANT:
-    // role is returned here so frontend knows
-    // whether this is FARMER, BUYER or ADMIN.
-    // -------------------------------------------------
-
-    return success(
-      res,
-      {
-        token,
-
-        user: {
-          id: user._id,
-          role: user.role,
-          name: user.name,
-          email: user.email,
-        },
-      }
-    );
-
+    return success(res, {
+      token,
+      user: {
+        id: user._id,
+        role: user.role,
+        name: user.name,
+        email: user.email,
+      },
+    });
   } catch (err) {
-    console.error(
-      "Login error:",
-      err
-    );
+    console.error("LOGIN ERROR:", err);
 
     return failure(
       res,
-      "Invalid credentials",
-      401
+      {
+        code: "LOGIN_FAILED",
+        message: "Login failed",
+        details: process.env.NODE_ENV === "production"
+          ? null
+          : err.message,
+      },
+      500
     );
   }
 };
