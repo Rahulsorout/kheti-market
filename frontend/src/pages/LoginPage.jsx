@@ -15,37 +15,46 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
   async function handleSubmit(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!email.trim() || !password.trim()) {
-      setError("Please enter your email and password.");
-      return;
-    }
-
-    try {
-      setLoading(true);
-      setError("");
-
-      const userdata = {
-        email: email.trim(),
-        password,
-      };
-
-      await login(userdata);
-
-      navigate("/");
-    } catch (err) {
-      console.error("Login error:", err);
-
-      setError(
-        err.response?.data?.message ||
-          err.message ||
-          "Login failed. Please check your credentials."
-      );
-    } finally {
-      setLoading(false);
-    }
+  if (!email.trim() || !password.trim()) {
+    setError("Please enter your email and password.");
+    return;
   }
+
+  try {
+    setLoading(true);
+    setError("");
+
+    const userdata = {
+      email: email.trim(),
+      password,
+    };
+
+    const result = await login(userdata);
+
+    const loggedInUser = result.data?.user;
+
+    if (loggedInUser?.role === "ADMIN") {
+      navigate("/admin");
+    } else if (loggedInUser?.role === "FARMER") {
+      navigate("/farmer");
+    } else {
+      navigate("/buyer");
+    }
+  } catch (err) {
+    console.error("Login error:", err);
+
+    setError(
+      err.response?.data?.error?.message ||
+        err.response?.data?.message ||
+        err.message ||
+        "Login failed. Please check your credentials."
+    );
+  } finally {
+    setLoading(false);
+  }
+}
 
   return (
     <div className="auth-page">

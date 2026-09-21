@@ -1582,113 +1582,226 @@ button {
    RESPONSIVE
 ========================================================= */
 
-@media (max-width: 1000px) {
+/* =========================================================
+   AUTH RESPONSIVE
+========================================================= */
 
-  .product-hero {
-    grid-template-columns: 1fr;
+/* Tablets + small laptops */
+@media (max-width: 900px) {
+  .auth-page {
+    min-height: 100dvh;
+    width: 100%;
+    display: block;
   }
 
-  .product-visual {
-    min-height: 350px;
-  }
-
-  .product-content-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .purchase-column {
-    position: static;
-  }
-
-}
-
-@media (max-width: 700px) {
-
-  .product-topbar-inner {
-    min-height: 62px;
-    padding: 0 16px;
-  }
-
-  .product-breadcrumb {
+  .auth-brand-panel {
     display: none;
   }
 
-  .product-page-container {
-    padding: 18px 15px 50px;
-  }
-
-  .product-hero {
-    gap: 18px;
-  }
-
-  .product-visual {
-    min-height: 270px;
-    border-radius: 22px;
-  }
-
-  .crop-emoji {
-    font-size: 90px;
-  }
-
-  .product-main-info {
-    padding: 5px 2px;
-  }
-
-  .product-main-info h1 {
-    font-size: 44px;
-  }
-
-  .product-description {
-    font-size: 14px;
-    margin: 15px 0 20px;
-  }
-
-  .hero-price {
-    padding: 17px;
-  }
-
-  .price-value {
-    font-size: 27px;
-  }
-
-  .product-meta-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .surface-card,
-  .action-card {
-    padding: 18px;
-    border-radius: 17px;
-  }
-
-  .farmer-profile {
-    flex-wrap: wrap;
-  }
-
-  .farmer-rating {
+  .auth-form-panel {
     width: 100%;
-    padding: 14px 0 0;
+    min-height: 100dvh;
 
-    border-left: 0;
-    border-top: 1px solid var(--km-border, #e4e8e2);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    padding: 36px 24px 50px;
+
+    box-sizing: border-box;
   }
 
-  .trust-grid {
+  .auth-form-container,
+  .auth-form-container.register {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .auth-mobile-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-bottom: 30px;
+
+    color: var(--km-green-800);
+    font-size: 18px;
+    font-weight: 800;
+  }
+
+  .auth-mobile-brand span {
+    font-size: 21px;
+  }
+
+  .auth-heading {
+    margin-bottom: 23px;
+  }
+
+  .auth-heading h1 {
+    font-size: 30px;
+  }
+
+  .auth-heading p {
+    max-width: 100%;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+  .auth-form-panel {
+    min-height: 100dvh;
+
+    padding: 25px 16px 40px;
+
+    align-items: flex-start;
+  }
+
+  .auth-form-container,
+  .auth-form-container.register {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .auth-mobile-brand {
+    margin-bottom: 25px;
+
+    font-size: 17px;
+  }
+
+  .auth-heading {
+    margin-bottom: 20px;
+  }
+
+  .auth-kicker {
+    font-size: 9px;
+  }
+
+  .auth-heading h1 {
+    font-size: 27px;
+    line-height: 1.18;
+  }
+
+  .auth-heading p {
+    margin-top: 8px;
+
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .auth-error,
+  .auth-success {
+    font-size: 11px;
+    padding: 10px;
+  }
+
+  /* Inputs */
+  .auth-input-wrapper input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 43px;
+}
+
+  /* Register role cards */
+  .auth-role-grid {
     grid-template-columns: 1fr;
+    gap: 9px;
   }
 
-  .section-heading {
-    gap: 10px;
+  .auth-role-card {
+    width: 100%;
+    min-height: 62px;
+
+    box-sizing: border-box;
   }
 
-  .detail-row {
-    gap: 15px;
+  /* Submit */
+  .auth-submit {
+    min-height: 48px;
+
+    font-size: 13px;
   }
 
-  .detail-row strong {
-    text-align: right;
+  .auth-switch {
+    flex-wrap: wrap;
+
+    margin-top: 20px;
+
+    font-size: 11px;
+    text-align: center;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 400px) {
+  .auth-form-panel {
+    padding: 20px 12px 35px;
   }
 
+  .auth-mobile-brand {
+    margin-bottom: 22px;
+  }
+
+  .auth-heading h1 {
+    font-size: 25px;
+  }
+
+  .auth-heading p {
+    font-size: 11px;
+  }
+
+  .auth-role-card {
+    min-height: 59px;
+    padding: 9px;
+  }
+
+  .auth-role-icon {
+    width: 32px;
+    height: 32px;
+
+    flex: 0 0 32px;
+  }
+
+  .auth-role-card strong {
+    font-size: 11px;
+  }
+
+  .auth-role-card small {
+    font-size: 9px;
+  }
+
+  .auth-submit {
+    min-height: 47px;
+  }
+}
+
+
+/* =========================================================
+   LANDSCAPE PHONES
+========================================================= */
+
+@media (max-height: 600px) and (max-width: 900px) {
+  .auth-form-panel {
+    padding-top: 18px;
+    padding-bottom: 25px;
+  }
+
+  .auth-mobile-brand {
+    margin-bottom: 16px;
+  }
+
+  .auth-heading {
+    margin-bottom: 15px;
+  }
 }
 /* =========================================================
    FARMER — MY PRODUCTS
